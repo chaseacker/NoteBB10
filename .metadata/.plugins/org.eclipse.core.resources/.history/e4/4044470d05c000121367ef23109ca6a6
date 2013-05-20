@@ -1,0 +1,39 @@
+import bb.cascades 1.0
+
+StandardListItem{
+    id: noteItem
+    title: ListItemData.title
+    imageSpaceReserved: false
+    contextActions: [
+        ActionSet {
+            MultiSelectActionItem {
+                onTriggered: {
+                    handler.active;
+                }
+            }
+        }
+    ]
+    attachedObjects: [
+        MultiSelectHandler {
+            id: handler
+            status: "None selected"
+            
+            // The actions that can be performed in a multi-select sessions are set up in the actions list.
+            actions: [
+                DeleteActionItem {
+                    title: "Delete"
+                    onTriggered: {
+                        app.deleteBucketItems(indexPath);
+                    }
+                },
+                ActionItem {
+                    title: "Delete"
+                    imageSource: "asset:///images/2Delete.png"
+                    ActionBar.placement: ActionBarPlacement.OnBar
+
+                }
+            ]
+        }
+    ]
+    
+}

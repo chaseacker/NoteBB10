@@ -1,4 +1,5 @@
 // Navigation pane project template
+
 import bb.cascades 1.0
 import bb.data 1.0
 
@@ -8,33 +9,49 @@ NavigationPane {
         id: root
         Container {
             background: Color.create(CCCCCC)
-            ImageView {
-                imageSource: "asset:///upper-bar_v1.png"
-            }
+           // ImageView {
+            //    imageSource: "asset:///upper-bar_v1.png"
+            //}
 
             ListView {
                 id: myList
                 objectName: "noteList"
+                contextActions: [
+                    ActionSet {
+                        DeleteActionItem {
+                            title: "Delete"
+                            onTriggered: {
+                                app.deleteNoteItem(myList.selected());
+                            }
+                        }
+                    }
+                ]
                 onTriggered: {
                     var selectedItem = dataModel.data(indexPath);
                     var page = notePage.createObject();
-                    page.item = selectedItem
+                    page.item = selectedItem;
                     navigationPane.push(page);
                 }
+                
                 layoutProperties: StackLayoutProperties {
                     spaceQuota: 1
                 }
+                
 
                 // Add appearance definitions for the list items using the
                 // listItemComponents list
                 listItemComponents: [
-
+                    
                     ListItemComponent {
-                        Header {
-                            title: ListItemData.title
+                        
+                        StandardListItem {
+        
                         }
                     }
+                    
                 ]
+
+                
 
             } // end of ListView
             layout: StackLayout {
@@ -45,8 +62,7 @@ NavigationPane {
                     id: addNew
 
                     onSaveNoteItem: {
-                        //noteModel.addNoteItem(text);
-                        //noteList.scrollToPosition(ScrollPosition.Beginning, ScrollAnimation.Default);
+                        app.addNoteItem(text);
                     }
                 },
                 ComponentDefinition {

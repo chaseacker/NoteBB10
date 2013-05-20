@@ -1,0 +1,67 @@
+/*
+ * Note.h
+ *
+ *  Created on: May 15, 2013
+ *      Author: alif
+ */
+
+#include <bb/cascades/Application>
+#include <bb/data/JsonDataAccess>
+#include <QString>
+#include <QtCore/QObject>
+#include <bb/cascades/GroupDataModel>
+#include <bb/cascades/QListDataModel>
+#include <bb/cascades/ListView>
+#include <bb/cascades/AbstractPane>
+#include <bb/cascades/ListView>
+#include <bb/cascades/ActivityIndicator>
+#include <bb/system/InvokeManager>
+#include <bb/system/InvokeRequest>
+#include <bb/system/InvokeTargetReply>
+#include <bb/cascades/Page>
+#include <bb/cascades/TextField>
+#include <bb/cascades/QmlDocument>
+#include <bb/cascades/NavigationPane>
+#include <bb/cascades/QmlDocument>
+#include <bb/cascades/AbstractPane>
+#include <bb/data/DataSource>
+#include <bb/system/SystemDialog>
+#include <bb/data/DataSource>
+#include <QObject>
+#include <QMetaType>
+using namespace bb::cascades;
+using namespace bb::data;
+using namespace bb::system;
+
+#ifndef NOTEAPP_H_
+#define NOTEAPP_H_
+#include <QVariant>
+#include <bb/cascades/Application>
+namespace bb {
+namespace cascades {
+
+class Note: public bb::cascades::Application
+{
+Q_OBJECT
+public:
+
+	Note(int argc, char **argv);
+	Q_INVOKABLE void addNoteItem(const QString itemTitle);
+
+	Q_INVOKABLE bool saveData();
+	virtual ~Note();
+	ListView noteList;
+	QVariantList mainList;
+	GroupDataModel noteModel;
+	JsonDataAccess jda;
+	QString mJsonDataPath;
+	QFile file;
+	QVariantList x;
+
+};
+
+} /* namespace cascades */
+} /* namespace bb */
+
+
+#endif /* NOTE_H_ */

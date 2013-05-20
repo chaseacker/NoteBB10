@@ -57,8 +57,7 @@ Page {
                 editSheet.open();
                 editSheet.text = bucketText.text;
             }
-        }
-        
+        }        
     ]
     
     attachedObjects: [
@@ -68,15 +67,9 @@ Page {
             hintText: "Note!"
             
             onSaveNoteItem: {
-                // Call the function to update the item data.  
-                bucketModel.editBucketItem(notePage.item, text);
-                
-                // Update the current item property data used in this Page to do this
-                // one has to copy all values to 'tempItem'.
+                app.editNoteItem(notePage.item, text);
                 var tempItem = notePage.item
-                // Update the item property
                 tempItem.title = text
-                // Then copy all values back to 'bucketPage.item'
                 notePage.item = tempItem 
             }
         }

@@ -1,0 +1,10 @@
+import bb.cascades 1.0
+
+StandardListItem{
+    id: noteItem
+    title: ListItemData.title
+    imageSpaceReserved: false
+    contextActions: [      
+    ]
+
+}

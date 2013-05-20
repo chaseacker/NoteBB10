@@ -28,62 +28,79 @@ using namespace bb::data;
 using namespace bb::system;
 
 Note::Note(int argc, char **argv) :
-          Application(argc, argv)
-{
+		Application(argc, argv) {
 
 	QmlDocument *qml = QmlDocument::create("asset:///main.qml");
-	        qml->setContextProperty("app", qml);
-	        NavigationPane *nav = qml->createRootObject<NavigationPane>();
+	qml->setContextProperty("app", this);
+	NavigationPane *nav = qml->createRootObject<NavigationPane>();
+	QVariantList x;
 
-	        	    // Get the ListView from QML and setup a DataModel from the JSON data.
-	        	    // Connect to the stampList triggered signal to the onListTriggered Slot function.
-	    ListView *noteList = nav->findChild<ListView*>("noteList");
-	        	    JsonDataAccess jda;
+	ListView *noteList = nav->findChild<ListView*>("noteList");
+	QString mJsonAssetsPath = "app/native/assets/Notes.json";
+	JsonDataAccess jda;
+	QStringList pathSplit = mJsonAssetsPath.split("/");
+	QString fileName = pathSplit.last();
+	QString dataFolder = QDir::homePath();
 
-	        	   QVariantList mainList = jda.load("app/native/assets/Notes.json").value<QVariantList>();
-
-	        	    GroupDataModel *noteModel = new GroupDataModel(QStringList() << "title");
-	        	    noteModel->insertList(mainList);
-
-	        	    noteList->setDataModel(noteModel);
-
-	        	    qDebug("DEBUG Works");
-	        	    // Create the application scene.
-	        	    Application::instance()->setScene(nav);
-
-
-}
-
-void Note::addNoteItem(const QString itemTitle)
-{
-	qDebug("myAction() addNOte is called...");
-    QVariantMap itemMap;
-    itemMap["title"] = QVariant(itemTitle);
-        // Add the new item to the data list.
-        mainList.insert(0, itemMap);
-        saveData();
-
-
-
+	// The path to the file in the data folder
+	mJsonDataPath = dataFolder + "/" + fileName;
+	QFile file(mJsonDataPath);
+	QVariantList mainList;
+	mainList = jda.load(mJsonDataPath).value<QVariantList>();
+	x = mainList;
+	//GroupDataModel *noteModel;
+	noteModel = new GroupDataModel(QStringList() << "title");
+	noteModel->insertList(mainList);
+	qml->setContextProperty("noteModel", noteModel);
+	noteList->setDataModel(noteModel);
+	qDebug("DEBUG Works");
+	// Create the application scene.
+	Application::instance()->setScene(nav);
 
 }
-bool Note::saveData()
-{
-	//JsonDataAccess jda;
-	//QVariantList mainList = jda.load("app/native/assets/Notes.json").value<QVariantList>();
-	qDebug("myAction() Save is called...");
-    jda.save(mainList, "app/native/assets/Notes.json");
 
-    if (jda.hasError()) {
-        bb::data::DataAccessError error = jda.error();
-        qDebug() << "JSON loading error: " << error.errorType() << ": " << error.errorMessage();
-        return false;
-    }
-
-    return true;
+void Note::addNoteItem(const QString itemTitle) {
+	QVariantMap itemMap;
+	itemMap["title"] = QVariant(itemTitle);
+	x = jda.load(mJsonDataPath).value<QVariantList>();
+	x.append(itemMap);
+	noteModel->clear();
+	noteModel->insertList(x);
+	saveData();
 }
-Note::~Note()
-{
+void Note::editNoteItem(const QVariant item, const QString newItemTitle){
+	x = jda.load(mJsonDataPath).value<QVariantList>();
+	QVariantMap itemMap = item.toMap();
+	int itemDataIndex = x.indexOf(itemMap);
+	QVariantList itemIndex = noteModel->find(itemMap);
+	itemMap["title"] = newItemTitle;
+	x.replace(itemDataIndex, itemMap);
+	noteModel->updateItem(itemIndex, itemMap);
+	saveData();
+}
+bool Note::saveData() {
+	JsonDataAccess jda;
+	jda.save(x, mJsonDataPath);
+
+	if (jda.hasError()) {
+		bb::data::DataAccessError error = jda.error();
+		qDebug() << "JSON loading error: " << error.errorType() << ": "
+				<< error.errorMessage();
+		return false;
+	}
+
+	return true;
+}
+void Note::deleteNoteItem(const QVariantList &indexPath) {
+	QVariant modelItem = noteModel->data(indexPath);
+	x = jda.load(mJsonDataPath).value<QVariantList>();
+	int itemDataIndex = x.indexOf(modelItem);
+	x.removeAt(itemDataIndex);
+	noteModel->removeAt(indexPath);
+	saveData();
+
+}
+Note::~Note() {
 
 }
 

@@ -18,7 +18,7 @@ Sheet {
             visibility: ChromeVisibility.Visible
             
             dismissAction: ActionItem {
-                imageSource: "asset:///images/Cancel.png"
+                imageSource: "asset:///images/delete.png"
                 onTriggered: {
                     // Hide the Sheet.
                     editSheet.close()
@@ -28,10 +28,8 @@ Sheet {
             acceptAction: ActionItem {
                 imageSource: "asset:///images/stickynote.png"
                 onTriggered: {
-                    // Hide the Sheet and emit signal that the item should be saved.
                     editSheet.close();
-                    
-                    app.addNoteItem(itemText.text);
+                    editSheet.saveNoteItem(itemText.text);
                 }
             }
         }

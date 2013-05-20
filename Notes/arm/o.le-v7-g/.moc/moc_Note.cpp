@@ -22,7 +22,7 @@ static const uint qt_meta_data_bb__cascades__Note[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,14 +31,19 @@ static const uint qt_meta_data_bb__cascades__Note[] = {
 
  // methods: signature, parameters, type, tag, flags
       30,   20,   19,   19, 0x02,
-      56,   19,   51,   19, 0x02,
+      61,   51,   19,   19, 0x02,
+     108,   90,   19,   19, 0x02,
+     144,   19,  139,   19, 0x02,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_bb__cascades__Note[] = {
     "bb::cascades::Note\0\0itemTitle\0"
-    "addNoteItem(QString)\0bool\0saveData()\0"
+    "addNoteItem(QString)\0indexPath\0"
+    "deleteNoteItem(QVariantList)\0"
+    "item,newItemTitle\0editNoteItem(QVariant,QString)\0"
+    "bool\0saveData()\0"
 };
 
 void bb::cascades::Note::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -48,7 +53,9 @@ void bb::cascades::Note::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
         Note *_t = static_cast<Note *>(_o);
         switch (_id) {
         case 0: _t->addNoteItem((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 1: { bool _r = _t->saveData();
+        case 1: _t->deleteNoteItem((*reinterpret_cast< const QVariantList(*)>(_a[1]))); break;
+        case 2: _t->editNoteItem((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 3: { bool _r = _t->saveData();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         default: ;
         }
@@ -89,9 +96,9 @@ int bb::cascades::Note::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
+        _id -= 4;
     }
     return _id;
 }

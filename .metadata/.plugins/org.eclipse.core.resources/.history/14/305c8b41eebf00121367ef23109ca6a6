@@ -1,0 +1,29 @@
+import bb.cascades 1.0
+
+StandardListItem{
+    id: noteItem
+    title: ListItemData.title
+    imageSpaceReserved: false
+    contextActions: [
+        // Add a set of four actions to the context menu for
+        // a list item
+        ActionSet {
+            DeleteActionItem {
+                title: "Delete"
+
+                onTriggered: {
+                    app.deleteNoteItem(noteItem.ListItem.indexPath);
+                }
+            }
+
+            MultiSelectActionItem {
+                multiSelectHandler: noteItem.ListItem.view.multiSelectHandler
+
+                onTriggered: {
+                    multiSelectHandler.active;
+                }
+            }
+
+        }
+    ]
+}

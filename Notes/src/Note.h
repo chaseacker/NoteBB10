@@ -41,19 +41,24 @@ namespace bb {
 namespace cascades {
 
 class Note: public bb::cascades::Application
-{ Q_OBJECT
+{
+Q_OBJECT
 public:
-
+    //GroupDataModel *noteModel;
 	Note(int argc, char **argv);
 	Q_INVOKABLE void addNoteItem(const QString itemTitle);
-
+	Q_INVOKABLE void deleteNoteItem(const QVariantList &indexPath);
+	Q_INVOKABLE void editNoteItem(const QVariant item, const QString newItemTitle);
 	Q_INVOKABLE bool saveData();
 	virtual ~Note();
+
 	ListView noteList;
 	QVariantList mainList;
-	GroupDataModel noteModel;
+    GroupDataModel *noteModel;
 	JsonDataAccess jda;
-
+	QString mJsonDataPath;
+	QFile file;
+	QVariantList x;
 
 };
 
